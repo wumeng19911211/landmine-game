@@ -1,0 +1,15 @@
+{
+  "name": "landmine-game",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:wumeng911211/landmine-game.git",
+  "license": "MIT",
+  "dependencies": {
+    "vue": "^2.6.11",
+    "vue-hot-reload-api": "^2.3.4"
+  },
+  "devDependencies": {
+    "@vue/component-compiler-utils": "^3.1.2",
+    "vue-template-compiler": "^2.6.11"
+  }
+}
