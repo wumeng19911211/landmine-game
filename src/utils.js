@@ -1,4 +1,5 @@
 export const getBoardData = (size = 10, bombNum = 10) => {
+    debugger
     const boardData = []
     for (let i = 0; i < size; i++) {
         const rowData = []
@@ -23,7 +24,7 @@ export const getBoardData = (size = 10, bombNum = 10) => {
         boardData.push(rowData)
     }
     setNeighbors(boardData)
-    setBombs(boardData, bombNum)
+    setBombs(boardData,size, bombNum)
     
     return boardData
 }
@@ -45,8 +46,9 @@ const setNeighbors = (boardData = []) => { // 设置格子之间的相邻关系
     }
     return boardData
 }
-const setBombs = (boardData, bombNum) => { // 埋藏地雷
-    const bombPositons = getBombPosition(bombNum)
+const setBombs = (boardData, size, bombNum,) => { // 埋藏地雷
+    debugger
+    const bombPositons = getBombPosition(size, bombNum)
     Array.from(bombPositons).forEach(item => {
         const bombPositon = item.split('-')
         const grid = boardData[bombPositon[0] - 1][bombPositon[1] - 1]
@@ -57,10 +59,10 @@ const setBombs = (boardData, bombNum) => { // 埋藏地雷
         }
     })
 }
-const getBombPosition = (bombNum) => { // 获取地雷位置
+const getBombPosition = (size, bombNum) => { // 获取地雷位置
     const bombPositons = new Set()
     while(bombPositons.size < bombNum) {
-        let id =  `${getRandom(bombNum)}-${getRandom(bombNum)}`
+        let id =  `${getRandom(size)}-${getRandom(size)}`
         if(!bombPositons.has(id)) {
             bombPositons.add(id)
         }

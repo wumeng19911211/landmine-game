@@ -2,8 +2,8 @@
   <div class="game-board">
     <div class="game-baord-head">
       <div class="row">
-        <div class="bomb-num">总数：{{bombNum}}</div>
-        <div class="time">耗时：{{time}}</div>
+        <div class="bomb-num">总数:{{markBombs.length}}/{{bombNum}}</div>
+        <div class="time">耗时(秒):{{time}}</div>
       </div>
       <div class="row">
         <div class="restart-btn">
@@ -60,9 +60,9 @@ export default {
           isTiming: false,
           currentDiffculty: '0',
           difficultyOptions: [
-            { key: '0', value: '容易', boardSize: 10, bombNum: 10},
-            { key: '1', value: '中等', boardSize: 14, bombNum: 14},
-            { key: '2', value: '困难', boardSize: 20, bombNum: 20},
+            { key: '0', value: '初级', boardSize: 9, bombPercent: 0.12},
+            { key: '1', value: '中级', boardSize: 16, bombPercent: 0.15},
+            { key: '2', value: '高级', boardSize: 20, bombPercent: 0.2},
           ]
         }
     },
@@ -82,7 +82,7 @@ export default {
         return this.difficultyOptions.find(item => item.key === this.currentDiffculty)
       },
       bombNum() {
-        return this.boardSize
+        return Math.ceil(this.boardSize * this.boardSize * this.boardConfig.bombPercent)
       },
       boardSize() {
         return this.boardConfig && this.boardConfig.boardSize || 10
@@ -118,12 +118,13 @@ export default {
         this.timing(startTime)
       },
       showContent(item) {
+        if(item.status === 1) return
         item.status = 1
         this.startTiming()
         this.showNeighbors(item)
         if(item.content === 'bomb') {
           this.endGame()
-          this.$message('Game over!');
+          this.$message.error('Game over!');
           return
         }
         const safeNum = this.boardSize * this.boardSize - this.bombNum
@@ -131,7 +132,7 @@ export default {
         // console.log('safeNum :>> ', safeNum);
         if(this.showContentNum >= safeNum) {
           this.endGame()
-          this.$message('You win!')
+          this.$message.success('You win!')
         }
       },
       reStart() {
@@ -161,7 +162,6 @@ export default {
         }
       },
       setMarkForBomb(item) {
-        console.log('右键 :>> ');
         if(item.status === 1) return
         const id = item.id
         if(this.markBombs.includes(id)) {
